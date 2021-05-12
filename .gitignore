@@ -1,0 +1,21 @@
+!.editorconfig
+work/
+.vscode/*
+.cache/
+*.sh
+1
+
+/doc/tags
+tags
+
+# binary
+*.mp3
+*.wav
+*.ogg
+*.mp4
+*.webm
+*.png
+*.jpg
+*.pgm
+*.ppm
+*.pcm
