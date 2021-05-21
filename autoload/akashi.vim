@@ -285,6 +285,18 @@ function! akashi#ASPTogglePlayState() abort
     call akashi#channel#send(l:channel, l:request)
 endfunction
 
+" @params {t_float} volume
+" @noreturns
+function! akashi#ASPChangePlayVolume(volume) abort
+    if s:akashi_job ==# v:none
+        call akashi#logger#err('No ASP channel found')
+        return
+    endif
+    let l:channel = akashi#result#unwrap(akashi#channel#create('localhost:' . g:akashi_asp_port, function('s:ASPChannelCallback')))
+    let l:request = akashi#message#request('12', 'media/change_playvolume', [a:volume])
+    call akashi#channel#send(l:channel, l:request)
+endfunction
+
 " @noreturns
 function! akashi#ASPPlayerExit() abort
     if s:akashi_job ==# v:none
