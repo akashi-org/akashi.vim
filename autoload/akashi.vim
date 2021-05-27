@@ -179,9 +179,9 @@ function! akashi#ASPSeek(seek_sec) abort
     call s:ExecSafeSeek(akashi#message#request(l:asp_id, 'media/seek', [a:seek_sec, 1]))
 endfunction
 
-" @params {t_number} seek_sec
+" @params {t_float} ratio
 " @noreturns
-function! akashi#ASPRSeek(seek_sec) abort
+function! akashi#ASPRSeek(ratio) abort
     if s:akashi_job ==# v:none
         call akashi#logger#err('No ASP channel found')
         return
@@ -192,9 +192,14 @@ function! akashi#ASPRSeek(seek_sec) abort
         return
     endif
 
+    if a:ratio < -1.0 || a:ratio > 1.0
+        call akashi#logger#err('The range of values must be from -1.0 to 1.0, inclusive.')
+        return
+    endif
+
     let s:akashi_is_seeking = v:true
     let l:asp_id = akashi#asp#id#create('relative_seek')
-    call s:ExecSafeSeek(akashi#message#request(l:asp_id, 'media/relative_seek', [a:seek_sec, 1]))
+    call s:ExecSafeSeek(akashi#message#request(l:asp_id, 'media/relative_seek', [a:ratio]))
 endfunction
 
 " @noreturns
@@ -314,6 +319,7 @@ function! akashi#ASPTerminate() abort
         call akashi#logger#err('No ASP process found')
         return
     endif
+    call akashi#ASPPlayerExit()
     call akashi#job#destroy(s:akashi_job)
     let s:akashi_job = v:none
 endfunction
