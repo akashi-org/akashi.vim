@@ -100,7 +100,7 @@ function! akashi#ASPInit(configPath) abort
 
     let l:job_commands = []
     if empty(g:akashi_debug_job_commands_head)
-        let l:job_commands = ['akashi-cli', 'kernel', '-c', a:configPath]
+        let l:job_commands = ['akashi', 'kernel', '-c', a:configPath]
     else
         let l:job_commands = g:akashi_debug_job_commands_head + [a:configPath]
     endif
