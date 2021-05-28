@@ -19,10 +19,17 @@ function! akashi#channel#create(addr, cb) abort
 endfunction
 
 " @params {t_channel} ch_handle
-" @params {t_str} request
+" @params {t_string} request
 " @noreturns
 function! akashi#channel#send(ch_handle, request) abort
     call ch_sendraw(a:ch_handle, a:request)
+endfunction
+
+" @params {t_channel} ch_handle
+" @params {t_string} request
+" @returns {t_dict}
+function! akashi#channel#eval(ch_handle, request) abort
+    return akashi#message#parseResponse(ch_evalraw(a:ch_handle, a:request))
 endfunction
 
 " @params {t_channel} ch_handle
